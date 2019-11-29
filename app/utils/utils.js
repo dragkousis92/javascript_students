@@ -11,7 +11,7 @@ class Utils {
         this.instance = this;
     };
 
-    static convertObjectToPerson(object) {
+    static convertObjectToStudent(object) {
         const { id, firstname, lastname, dob, image, studies, academyPeriod, comments } = object;
         return new Student(id, firstname, lastname, dob, image, studies, academyPeriod, comments);
     }

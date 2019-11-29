@@ -1,3 +1,5 @@
+import studentObject from './studentObject'
+
 class IndexedDbConnector {
 
 	constructor(dbName, eventReady, ...arrayNames) {
@@ -10,21 +12,35 @@ class IndexedDbConnector {
 			window.alert("Your browser doesn't support a stable version of IndexedDB.")
 		}
 
-		var request = window.indexedDB.open(dbName, 1.1);
+		var request = window.indexedDB.open(dbName, 1);
 		let element = this;
 
 		request.onupgradeneeded = function (event) {
 
 			var db = event.target.result;
-
-			arrayNames.forEach(arrayName => {
-				if (!db.objectStoreNames.contains(arrayName)) {
-					db.createObjectStore(arrayName, { autoIncrement: true });
-				}
-			});
-
-			element._database = db;
+			// let objectStore=db.createObjectStore(arrayName, { autoIncrement: true });
+			var objectStore = db.createObjectStore("student", { keyPath: "id" });
+			// arrayNames.forEach(arrayName => {
+			// 	if (!db.objectStoreNames.contains(arrayName)) {
+			// 		// objectStore = 
+			// 	}
+			// });
 			console.log("success: " + this._database);
+
+			objectStore.transaction.oncomplete = function(event) {
+
+				// if (db.objectStoreNames.contains(student)){
+					// Store values in the newly created objectStore.
+					var studentObjectStore = db.transaction("student", "readwrite").objectStore("student");
+					studentObject.students.forEach(function(customer) {
+						studentObjectStore.add(customer);
+					});
+				// };
+
+				element._database = db;
+			
+			};
+
 		};
 
 		request.onerror = function (event) {

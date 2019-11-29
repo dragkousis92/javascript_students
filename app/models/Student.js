@@ -23,7 +23,7 @@ class Student {
         return this.id + ": " + this._firstName + " " + this._lastName + " " + this._dob + " " + this._image + " " + this._studies + " " + this._academyPeriod + " " + this._comments;
     }
 
-    get academyPeriod() {
+    getAcademyPeriod() {
         return this._academyPeriod;
     }
 

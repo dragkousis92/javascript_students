@@ -1,11 +1,12 @@
 import Student from "./models/Student";
 import IndexedDbConnector from "./utils/indexedDbConnector";
 import Utils from "./utils/utils";
+import StudentComponent from "./component/StudentCompoment";
+import StudentListComponent from "./component/StudentListComponent";
+import Subject from "./library/Subject";
 
 const utils = new Utils();
 const Students = [];
-
-
 
 // Create the event
 // var eventDBReady = new CustomEvent("IndexedDbReady", {});
@@ -24,28 +25,43 @@ window.db = db;
 
 
 
+
 // Add an event listener
 document.addEventListener("IndexedDbReady", function (e) {
-    console.log('IndexedDbReady event');
     db.readAll("student");
 });
 
 document.addEventListener("IndexedDbReadAll", function (e) {
 
+  
+ 
+    let subject = new Subject();
+    let state= {'filter' : "-"};
+    subject.update(state);
+    console.log(subject);
+
+
+
+    let studentList = new StudentListComponent(subject,'studentList');
+    subject.addObserver(studentList);
 
     event.detail.result.map((item) => {
-        Students.push(Utils.convertObjectToPerson(item));
+        let temp = new StudentComponent(item,state);
+        studentList.addStudentComponent(temp);
+        // Students.push(Utils.convertObjectToPerson(item));
     });
 
+    studentList.render();
 
-    //addObserverPattern here
 
-    let html = '';
-    Students.forEach(student => { console.log(student); html += student.renderSummary() });
+    // setTimeout(() => {
+    //     state= {'filter': "October 2019"};
+    //     subject.update(state);
+    //     console.log(subject);
+    // }, 5000);
+   
 
-    console.log(html);
-
-    document.getElementById('studentList').innerHTML = html;
+    
 
 });
 
