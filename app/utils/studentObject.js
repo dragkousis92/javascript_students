@@ -17,7 +17,7 @@ let students ={
             "id": 2,
             "first_name": "Ioannis",
             "last_name": "Argyriou",
-            "DoB": "20 Jul 1990",
+            "academy_period": "20 Jul 1990",
             "image": "https://placeimg.com/200/200/people",
             "studies": [
                 "University of Patras",

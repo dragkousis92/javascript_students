@@ -1,14 +1,17 @@
 class Subject {
     constructor() {
         this.observers = [];
-        this.state= {};
+        this._state= {};
     }
 
 
-    update(data = {}) {
-        this.state = data;
-        this.notify(this.state);
-      }
+    update() {
+        this.notify(this._state);
+    }
+
+    getState(){
+        return this._state;
+    }
 
 
     // Add an observer to this.observers.
@@ -29,9 +32,9 @@ class Subject {
 
     // // Loops over this.observers and calls the update method on each observer.
     // // The state object will call this method everytime it is updated.
-    notify(status) {
+    notify() {
         if (this.observers.length > 0) {
-            this.observers.forEach(observer => observer.update(status));
+            this.observers.forEach(observer => observer.update(this));
         }
     }
 }

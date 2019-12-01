@@ -3,38 +3,80 @@ import indexedDbConnector from '../utils/indexedDbConnector'
 import Observer from '../library/Observer';
 import StudenComponent from './StudentCompoment';
 
+
+
 class StudentListComponent extends Observer {
 
     constructor(state, selector) {
         super(state,selector);
         this._students = [];
 
-        // let students =  IndexedDbConnector.readAll();
+        // console.log(state);
     }
 
     addStudentComponent(student){
-      console.log('adding student');
       this._students.push(student);
     }
 
     generateHTML(){
    
       let studentsHTML = '';
-      console.log(this._state);
+
+      let selectOptionsHTML = `<option value=''>All</option>`;
+      let selectOptions=[];
+
+
       this._students.filter(student => {
-        return this._state.filter !== student.getAcademyPeriod();
+        let academyPeriod= student.getAcademyPeriod();
+
+        // selectInputHTML+= `<option value='}'></option>`;
+        selectOptions.indexOf(academyPeriod) === -1 ? selectOptions.push(academyPeriod) : '';
+
+        if(this._state._state._filter)
+          return this._state._state._filter === student.getAcademyPeriod();
+        else{
+          return true;
+        }
       }).forEach( student => {
           studentsHTML+= student.render();
       });
+
+      selectOptionsHTML += selectOptions.map((option) =>{
+        return `<option value='${option}' ${this._state._state._filter == option ? 'selected' : ""}>${option}</option>`
+      }).join('');
+
       
       let html =
        `<div class='studentList'>
+            <div class=''><select id='academyInput'>${selectOptionsHTML}</select></div>
             <div class=''>${studentsHTML}</div>
         </div>`
-        ;
-
+      ;
       return html;
-        
+    }
+
+    attachListeners(){
+    
+
+      var userLinks = document.getElementsByClassName('studentDetailsLink');
+      let state = this._state;
+
+      for(let i = 0; i < userLinks.length; i++) {
+        userLinks[i].addEventListener("click", function(e) {   
+          state.setStudentDetails(e.target.dataset.id) ;
+         
+        })
+      }
+
+      document.getElementById('academyInput').onchange= (e) =>{
+          state.setFilter( e.target.options[e.target.selectedIndex].value ) ;
+      };
+    }
+
+    render(){
+      super.render();
+      this.attachListeners();
+      console.log(this);
     }
 
     update(state) {

@@ -3,73 +3,71 @@ import IndexedDbConnector from "./utils/indexedDbConnector";
 import Utils from "./utils/utils";
 import StudentComponent from "./component/StudentCompoment";
 import StudentListComponent from "./component/StudentListComponent";
-import Subject from "./library/Subject";
+import StudentDetailsComponent from "./component/StudentDetailsComponent";
+import StateComponent from "./component/StateComponent";
 
-const utils = new Utils();
-const Students = [];
+console.log(IndexedDbConnector);
 
-// Create the event
-// var eventDBReady = new CustomEvent("IndexedDbReady", {});
-// var eventDBLoad = new CustomEvent("IndexedDbLoad", {});
+let path = window.location.pathname;
+let state = new StateComponent();
 
-const db = new IndexedDbConnector("persons", "student");
+IndexedDbConnector.init("persons", "student").then(response =>{
 
+        console.log(response)
+        // /let database = response;
 
-window.db = db;
-
-// Dispatch/Trigger/Fire the event
-
-
-
-// db.add(s2, "student");
-
-
-
-
-// Add an event listener
-document.addEventListener("IndexedDbReady", function (e) {
-    db.readAll("student");
-});
-
-document.addEventListener("IndexedDbReadAll", function (e) {
-
+    if( path == '/'){
   
- 
-    let subject = new Subject();
-    let state= {'filter' : "-"};
-    subject.update(state);
-    console.log(subject);
+        let studentList = new StudentListComponent(state,'studentList');
+        state.addObserver(studentList);
 
+        IndexedDbConnector.readAll("student").then(response => {
+            response.forEach(item=>{
+                let temp = new StudentComponent(item,state);
+                studentList.addStudentComponent(temp);
+            });
+            studentList.render();
+        });
+    }
+    
+    if(  path.indexOf('student/')  ){
+        let studentId= path.split('/')[2];
+        let studentDetails = new StudentDetailsComponent(state,'studentDetails');
+        state.addObserver(studentDetails);
 
-
-    let studentList = new StudentListComponent(subject,'studentList');
-    subject.addObserver(studentList);
-
-    event.detail.result.map((item) => {
-        let temp = new StudentComponent(item,state);
-        studentList.addStudentComponent(temp);
-        // Students.push(Utils.convertObjectToPerson(item));
-    });
-
-    studentList.render();
-
-
-    // setTimeout(() => {
-    //     state= {'filter': "October 2019"};
-    //     subject.update(state);
-    //     console.log(subject);
-    // }, 5000);
-   
+        IndexedDbConnector.read(1,'student',).then(response => {
+             console.log(response)
+                 state.setStudentDetails(response);
+        })
 
     
+    }
+
 
 });
 
 
+// document.addEventListener("IndexedDbReady", function (e) {
+//     // db.readAll("student");
+//     if( path == '/'){
+  
+//         let studentList = new StudentListComponent(state,'studentList');
+//         state.addObserver(studentList);
 
+//         window. db.readAll("student").then(response => {
+//             response.forEach(item=>{
+//                 let temp = new StudentComponent(item,state);
+//                 studentList.addStudentComponent(temp);
+//             });
+//             studentList.render();
+//         });
+//     }
+    
+//     if(  path.indexOf('student/')  ){
+//         let studentId= path.split('/')[2];
+//         let studentDetails = new StudentDetailsComponent(state,'studentDetails');
+//         state.addObserver(studentDetails);
+//         state.setStudentDetails(studentId);
+//     }
 
-let result = [];
-
-
-console.log(result);
-
+// });
