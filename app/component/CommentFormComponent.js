@@ -24,7 +24,7 @@ class CommentFormComponent extends Observer{
         let commentHTML = '';
         this._commentList.forEach(comment =>{
          commentHTML+=`<li data-comment='${counter}' class='commennt'>${counter}. ${comment._name}-${comment._text}
-                            <span class='edit'>e</span><span class='delete'>d</span>
+                            <span class='edit'><i class="fa fa-pencil" aria-hidden="true"></i></span>  <span class='delete'><i class="fa fa-trash" aria-hidden="true"></i></span>
                           </li>`; 
             counter++;
         });

@@ -1,17 +1,11 @@
 import Subject from '../library/Subject';
-import indexedDbConnector from '../utils/indexedDbConnector'
 import Observer from '../library/Observer';
-import StudenComponent from './StudentCompoment';
-
-
 
 class StudentListComponent extends Observer {
 
     constructor(state, selector) {
         super(state,selector);
         this._students = [];
-
-        // console.log(state);
     }
 
     addStudentComponent(student){
@@ -29,7 +23,6 @@ class StudentListComponent extends Observer {
       this._students.filter(student => {
         let academyPeriod= student.getAcademyPeriod();
 
-        // selectInputHTML+= `<option value='}'></option>`;
         selectOptions.indexOf(academyPeriod) === -1 ? selectOptions.push(academyPeriod) : '';
 
         if(this._state._state._filter)
@@ -56,8 +49,6 @@ class StudentListComponent extends Observer {
     }
 
     attachListeners(){
-    
-
       var userLinks = document.getElementsByClassName('studentDetailsLink');
       let state = this._state;
 

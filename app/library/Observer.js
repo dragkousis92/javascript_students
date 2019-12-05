@@ -15,8 +15,6 @@ class Observer {
             let markup = this.generateHTML();
             let parent = document.getElementById(this._selector);
             parent.innerHTML = markup;
-
-            console.log(this._selector,markup);
             return;
         }
 

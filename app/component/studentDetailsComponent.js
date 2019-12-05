@@ -8,47 +8,27 @@ console.log(update);
 class StudentDetailsComponent extends Observer{
 
     constructor(state,selector){
-
         super(state,selector);
-
         this._student = null;
         this._state = state;
-        this._commentForm = null;
-      
-
-     
-      
+        this._commentForm = null; 
     }
 
     save(){
         update( this._student ,'student').then(response => {});
-
     }
 
-    
     update(state) {
-        console.log(this);
-
         if(!this._state._state._studentDetails) return;
+        
         this._state=state;
-
-        // IndexedDbConnector.init("persons", "student").then(response =>{
-
-            // indexedDbConnector.read( this._state._state._studentDetails - 0 ,'student').then(response => {
-                this._student= this._state._state._studentDetails;
-                this._commentForm = new CommentFormComponent(state,'commentFormWrapper',this._student.comments,this);
-                this.render();
-              
-            //   });
-    
-        // });
-          
-      
-      }    
+        this._student= this._state._state._studentDetails;
+        this._commentForm = new CommentFormComponent(state,'commentFormWrapper',this._student.comments,this);
+        this.render();        
+    }    
 
     generateHTML() {
 
-        console.log('generateHTML');
         if(!this._student) return "";
 
         let studiesHTML='<ol>';
@@ -57,7 +37,8 @@ class StudentDetailsComponent extends Observer{
         });        
 
         let html = 
-        `<div class='studentDetailsWrapper'>
+        `<a href='/'>Επιστροφή</a>
+        <div class='studentDetailsWrapper'>
             <div class='row'>
                 <div class='col-md-6'><img src='${this._student.image}'></div>
                 <div class='col-md-6'>
@@ -77,7 +58,6 @@ class StudentDetailsComponent extends Observer{
                 </div>
             </div>
         </div>`;
-
         return html;
     }
 

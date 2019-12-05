@@ -11,14 +11,11 @@ class StudentComponent extends Observer{
     }
 
     generateHTML() {
-        console.log(this._student);
-
         let html = `
         <div  class='studentWrapper'>
-            <a href='/student/1'>student</a>
             <div class='studentDetailsLink' data-id='${this._student.id}' >
                 ${this._student.id}:<img class='student-img'src='${this._student.image}'/> 
-                ${this._student.first_name} ${this._student.last_name} ${this._student.DoB}
+                <a href='/student/${this._student.id}'>${this._student.first_name} ${this._student.last_name}</a> ${this._student.DoB}
             </div> 
         </div>`;
 

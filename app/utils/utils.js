@@ -7,7 +7,6 @@ class Utils {
         if (this.instance) {
             return this.instance;
         }
-
         this.instance = this;
     };
 
